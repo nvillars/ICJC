@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { connect } from '../../../../lib/db'
+import { requirePermission } from '../../../../lib/adminGuard'
 import Post from '../../../../models/Post'
 import { logAudit } from '../../../../lib/audit'
 import { requireAdminOrEditor } from '../../../../lib/adminGuard'
@@ -13,7 +14,7 @@ export async function POST(req: Request) {
   const rl = rateLimit(req)
   if (!(await rl.check())) return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
 
-  const sessionCheck = await requireAdminOrEditor(req)
+  const sessionCheck = await requirePermission(req, 'content.create')
   if (!sessionCheck.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const body = await req.json()
@@ -21,12 +22,13 @@ export async function POST(req: Request) {
   if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 422 })
   await connect()
   const p = await Post.create({ ...parsed.data, status: 'draft' })
-  await logAudit({ action: 'create', entityType: 'Post', entityId: p._id, after: p, userEmail: sessionCheck.email })
+  const userEmail = (sessionCheck as any).email || null
+  await logAudit({ action: 'create', entityType: 'Post', entityId: p._id, after: p, userEmail })
   return NextResponse.json(p)
 }
 
 export async function GET(req: Request) {
-  const sessionCheck = await requireAdminOrEditor(req)
+  const sessionCheck = await requirePermission(req, 'content.read')
   if (!sessionCheck.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   await connect()
   const items = await Post.find().sort({ createdAt: -1 }).limit(50)
@@ -36,7 +38,7 @@ export async function GET(req: Request) {
 export async function PUT(req: Request) {
   const rl = rateLimit(req)
   if (!(await rl.check())) return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
-  const sessionCheck = await requireAdminOrEditor(req)
+  const sessionCheck = await requirePermission(req, 'content.update')
   if (!sessionCheck.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const body = await req.json()
@@ -61,14 +63,15 @@ export async function PUT(req: Request) {
   if (parsed.data.status !== undefined) doc.status = parsed.data.status
   doc.version = (doc.version || 1) + 1
   const afterDoc = await doc.save()
-  await logAudit({ action: 'update', entityType: 'Post', entityId: id, before, after: afterDoc, userEmail: sessionCheck.email })
+  const userEmail = (sessionCheck as any).email || null
+  await logAudit({ action: 'update', entityType: 'Post', entityId: id, before, after: afterDoc, userEmail })
   return NextResponse.json(afterDoc)
 }
 
 export async function DELETE(req: Request) {
   const rl = rateLimit(req)
   if (!(await rl.check())) return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
-  const sessionCheck = await requireAdminOrEditor(req)
+  const sessionCheck = await requirePermission(req, 'content.delete')
   if (!sessionCheck.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const body = await req.json()
@@ -82,6 +85,7 @@ export async function DELETE(req: Request) {
   if (!doc) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   const before = doc.toObject()
   await Post.deleteOne({ _id: id })
-  await logAudit({ action: 'delete', entityType: 'Post', entityId: id, before, after: null, userEmail: sessionCheck.email })
+  const userEmail = (sessionCheck as any).email || null
+  await logAudit({ action: 'delete', entityType: 'Post', entityId: id, before, after: null, userEmail })
   return NextResponse.json({ ok: true })
 }
