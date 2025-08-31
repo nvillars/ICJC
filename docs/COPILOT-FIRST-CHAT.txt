@@ -1,0 +1,76 @@
+Contexto del proyecto — IC “Jesucristo es el Camino” (ICJC)
+
+Eres mi Tech Lead asistido por Copilot. Quiero que leas y ejecutes el contenido de:
+1) .github/copilot-instructions.md  ← PROMPT principal (público + /admin con RBAC, sync Facebook, bitácora, workflow editorial).
+2) docs/MANUAL-OPERACION-ADMIN-ICJC.md  ← Manual para el equipo pastoral/comunicación.
+3) docs/CHEATSHEET-ADMIN-ICJC.md        ← Hoja rápida de operación.
+4) docs/README-ADMIN.md                  ← Readme del panel /admin.
+5) docs/NEXTAUTH_SETUP.md
+6) docs/RBAC_MODEL.md
+7) docs/SCHEMA_USERS_CONTENT.md
+8) docs/ADMIN_ROUTES_AND_GUARDS.md
+9) docs/AUDIT_LOGGING.md
+10) docs/EDITORIAL_WORKFLOW.md
+11) docs/FACEBOOK_SYNC_ADMIN.md
+12) docs/SECURITY_CHECKLIST.md
+
+Si alguno de estos archivos no existe en el repo, créalo con el contenido indicado en las especificaciones del prompt principal y de estos docs (o vuelve a pedirme el bloque y genéralo).
+
+Objetivo final (MVP entregable en un PR):
+A) Sitio público dinámico (NO estático) con Next.js + TypeScript + Tailwind:
+   - Rutas: /, /sermones (+detalle y filtros), /eventos (+históricos), /ministerios, /nosotros, /contacto, /donaciones, /blog, /galeria, /en-vivo (detección live y fallback).
+   - SEO/A11y: JSON-LD (Organization/Event/Article), OG/Twitter, sitemap.xml, robots.txt, WCAG 2.2 AA.
+   - Lectura de contenido desde MongoDB (Mongoose). Nada hardcodeado salvo seeds.
+
+B) Panel /admin con autenticación y roles (NextAuth + MongoDB Adapter + RBAC):
+   - /admin/login, /admin (dashboard), /admin/content/{posts,sermons,events,series,ministries,tags,media}
+   - CRUD completo con workflow editorial: draft → review → published → archived (controles por rol).
+   - Bitácora/auditoría (AuditLog) registrando quién/cambio/cuándo con before/after.
+   - Página /admin/sync/facebook para sincronizar (Graph API si hay token; si no, import por enlaces/embeds). Idempotencia por fbId.
+   - Secciones Blocks/Settings para héroes/banners/enlaces sin tocar código.
+   - Botón de ayuda (?) que abre docs/MANUAL-OPERACION-ADMIN-ICJC.md y docs/CHEATSHEET-ADMIN-ICJC.md.
+
+C) Seguridad/Calidad:
+   - RBAC estricto en server, validaciones con Zod, rate limit en /api/auth/* y /api/admin/*, bcrypt en passwords, headers de seguridad.
+   - Core Web Vitals “Good”. Lighthouse ≥ 90 en Performance/A11y/SEO en Home, /sermones y /admin.
+   - CI en GitHub Actions (lint, typecheck, build, tests; opcional Lighthouse CI).
+
+Entradas de contenido (A–M) y seeds:
+- Usa lo indicado en .github/copilot-instructions.md para poblar /data y /content: 
+  - sitemap.json, content_schemas.json, facebook_inventory.csv, schedule_locations.csv, seed_posts.json, seed_events.json, openapi_stub.yaml.
+- Si ves placeholders, reemplázalos con los bloques provistos en el prompt o pídeme los bloques exactos y procede.
+
+Stack y convenciones:
+- Next.js App Router + TS + Tailwind + shadcn/ui + Zod + MongoDB Atlas (Mongoose).
+- NextAuth (Credentials + Facebook OAuth opcional).
+- Estructura y nombres de carpetas/endpoints exactamente como en .github/copilot-instructions.md.
+- Commits con Conventional Commits. No subir secretos. Usar variables de entorno del .env.local.
+
+Tareas (hazlas en este orden y abre PR):
+1) Scaffold del proyecto y estructura de carpetas.
+2) Modelos Mongoose: User, AuditLog, Post, Sermon, Event, Series, Ministry, Media, Tag, Block, Settings (con índices y version para optimistic locking).
+3) NextAuth + RBAC + middleware para /admin/**. Script /scripts/seed-admin.ts.
+4) Páginas del panel /admin, CRUD + workflow editorial, guardas de permiso.
+5) Auditoría: hooks y helper logAudit; UI de /admin/bitacora con filtros y detalle.
+6) Sync Facebook: /admin/sync/facebook + /api/admin/sync/facebook (Graph API o import por enlaces). Idempotencia por fbId.
+7) Páginas públicas leyendo desde DB, con filtros/orden/paginación y JSON-LD + OG.
+8) Formularios de contacto con Zod y anti-spam (reCAPTCHA u honeypot).
+9) SEO/A11y + sitemap.xml + robots.txt. Botón de ayuda (?) hacia los docs.
+10) GitHub Actions CI (lint, typecheck, build, tests). README de operación y despliegue.
+
+Criterios de aceptación (DoD del PR):
+- Público: todas las rutas funcionan, datos desde Mongo, SEO/A11y ok.
+- Admin: login y roles operativos; CRUD completo; estados editoriales; Bitácora visible con before/after; Sync Facebook manual funcionando y sin duplicados.
+- Seguridad: RBAC server-side, validación Zod, rate limit básico, headers seguros.
+- Rendimiento: Lighthouse ≥ 90 en páginas clave.
+- Documentación: README de uso, referencia a docs de manual y cheatsheet; enlaces visibles en el panel.
+
+Branch y PR:
+- Crea la rama: feature/icjc-mvp-admin
+- Crea PR: “feat: ICJC sitio público dinámico + panel /admin con RBAC, workflow, bitácora y sync Facebook”
+- Incluye checklist de DoD y capturas mínimas (si aplica). Solicita revisión.
+
+Acciones ahora:
+- Lee .github/copilot-instructions.md y los docs*.md.
+- Genera el proyecto completo con los archivos, seeds y workflows.
+- Abre el PR con la rama indicada y describe cómo probar login (/admin/login), CRUD, publicación y sync Facebook.

@@ -1,0 +1,5 @@
+{
+  "post": { "fields": ["title","slug","excerpt","content","tags","authors","publishedAt"] },
+  "sermon": { "fields": ["title","slug","predicador","serie","pasaje","videoEmbed","thumbnail","publishedAt"] },
+  "event": { "fields": ["title","slug","description","start","end","place","mapUrl","publishedAt"] }
+}
