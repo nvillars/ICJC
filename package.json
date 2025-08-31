@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed:admin": "node scripts/seed-admin.js"
+  "seed:admin": "node scripts/seed-admin.js",
+  "pr:prepare": "node -e \"console.log('Prepare PR: run lint, typecheck and tests locally')\""
   },
   "dependencies": {
     "bcrypt": "5.1.0",
