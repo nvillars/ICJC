@@ -7,7 +7,8 @@ export async function logAudit(entry: any) {
     const doc = await Audit.create({ timestamp: new Date(), ...entry })
     return doc
   } catch (e) {
-    console.error('logAudit error', e)
+    /* eslint-disable-next-line no-console */
+    console.debug('logAudit error', e)
     return null
   }
 }

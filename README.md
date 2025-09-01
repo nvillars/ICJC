@@ -24,6 +24,14 @@ Pasos rápidos para ejecutar localmente (Windows PowerShell):
 
 	npm run dev
 
+6) Utilidades útiles
+
+	# Regenerar sitemap desde data/sitemap.json (usa ts-node)
+	npm run build:sitemap
+
+	# Reiniciar dev (borra .next)
+	npm run dev:reset
+
 5) Verificar en el navegador
 
 	- Home: http://localhost:3000

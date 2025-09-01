@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export default function AdminSermonsPage() {
   const [auth, setAuth] = useState<any>(null)
@@ -35,7 +36,7 @@ export default function AdminSermonsPage() {
   }
 
   if (auth === null) return <p>Cargando...</p>
-  if (!auth?.authenticated) return <div><p>No autenticado.</p><a href="/admin/login">Ir a login</a></div>
+  if (!auth?.authenticated) return <div><p>No autenticado.</p><Link href="/admin/login">Ir a login</Link></div>
 
   const statusOptions = [
     { value: 'draft', label: 'Borrador' },
@@ -48,7 +49,7 @@ export default function AdminSermonsPage() {
     <main aria-labelledby="sermones-heading" className="p-6 max-w-3xl mx-auto">
       <h2 id="sermones-heading" className="text-2xl font-bold mb-4">Sermones (admin)</h2>
       <nav aria-label="Acciones principales" className="mb-4">
-        <a href="/admin/content/sermons/new" className="bg-blue-700 text-white px-4 py-2 rounded focus:outline focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 hover:bg-blue-800 transition">Crear sermón</a>
+        <Link href="/admin/content/sermons/new" className="bg-blue-700 text-white px-4 py-2 rounded focus:outline focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 hover:bg-blue-800 transition">Crear sermón</Link>
       </nav>
       {error && <p role="alert" className="text-red-600 font-semibold">{error}</p>}
       <section aria-label="Listado de sermones">
@@ -66,7 +67,7 @@ export default function AdminSermonsPage() {
               </div>
               {canEdit(s) && (
                 <div className="flex items-center gap-2">
-                  <a href={`/admin/content/sermons/${s._id}`} className="underline text-blue-700 focus:outline focus:ring-2 focus:ring-blue-400 rounded px-1">Editar</a>
+                  <Link href={`/admin/content/sermons/${s._id}`} className="underline text-blue-700 focus:outline focus:ring-2 focus:ring-blue-400 rounded px-1">Editar</Link>
                   <span className="text-gray-400">|</span>
                   <label className="sr-only" htmlFor={`status-${s._id}`}>Cambiar estado</label>
                   <select

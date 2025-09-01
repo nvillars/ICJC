@@ -39,11 +39,12 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       // ensure a stable session.user object with id/email/name and roles
-      ;(session as any).roles = token.roles || []
-      const u = { id: token.userId || (session as any).user?.id, email: token.email || (session as any).user?.email, name: token.name || (session as any).user?.name }
-      ;(session as any).user = u
-      ;(session as any).userId = token.userId || u.id
-      return session
+      const s: any = session
+      s.roles = (token as any).roles || []
+      const u = { id: (token as any).userId || s.user?.id, email: (token as any).email || s.user?.email, name: (token as any).name || s.user?.name }
+      s.user = u
+      s.userId = (token as any).userId || u.id
+      return s
     }
   },
   session: { strategy: 'jwt' },

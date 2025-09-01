@@ -1,6 +1,7 @@
 "use client"
 import { signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 function SyncFacebookCard(){
   const [status, setStatus] = useState<any>(null)
@@ -12,7 +13,7 @@ function SyncFacebookCard(){
       <h2 className="text-lg font-semibold">Facebook</h2>
       <p className="mt-2 text-sm text-gray-600">Estado token: <strong className="text-sm">{status?.hasToken ? 'Conectado' : 'No configurado'}</strong></p>
       <p className="mt-1 text-sm text-gray-600">Candidatos pendientes: <strong>{(status?.candidates?.length)||0}</strong></p>
-      <p className="mt-3"><a href="/admin/sync/facebook" className="inline-block bg-[#0A4D9C] text-white px-3 py-1 rounded">Ir a Sync</a></p>
+  <p className="mt-3"><Link href="/admin/sync/facebook" className="inline-block bg-[#0A4D9C] text-white px-3 py-1 rounded">Ir a Sync</Link></p>
     </article>
   )
 }
@@ -38,9 +39,9 @@ export default function AdminPage() {
           <article className="p-4 bg-white rounded-lg shadow">
             <h2 className="text-lg font-semibold">Atajos</h2>
             <ul className="mt-3 space-y-2">
-              <li><a href="/admin/content/posts" className="text-[#0A4D9C] underline">Posts</a></li>
-              <li><a href="/admin/content/sermons" className="text-[#0A4D9C] underline">Sermones</a></li>
-              <li><a href="/admin/content/events" className="text-[#0A4D9C] underline">Eventos</a></li>
+              <li><Link href="/admin/content/posts" className="text-[#0A4D9C] underline">Posts</Link></li>
+              <li><Link href="/admin/content/sermons" className="text-[#0A4D9C] underline">Sermones</Link></li>
+              <li><Link href="/admin/content/events" className="text-[#0A4D9C] underline">Eventos</Link></li>
             </ul>
           </article>
           <SyncFacebookCard />
@@ -51,7 +52,7 @@ export default function AdminPage() {
           <article className="p-4 bg-white rounded-lg shadow">
             <h2 className="text-lg font-semibold">Sincronización</h2>
             <p className="mt-2 text-sm text-gray-600">Importa contenidos públicos desde Facebook. Revisa candidatos antes de publicar. Idempotencia por fbId.</p>
-            <p className="mt-3"><a href="/admin/sync/facebook" className="inline-block bg-[#0A4D9C] text-white px-3 py-1 rounded">Ir a Sync</a></p>
+            <p className="mt-3"><Link href="/admin/sync/facebook" className="inline-block bg-[#0A4D9C] text-white px-3 py-1 rounded">Ir a Sync</Link></p>
           </article>
         </div>
 
@@ -66,8 +67,8 @@ export default function AdminPage() {
             <div className="p-4 bg-white rounded-lg shadow">
               <h4 className="text-md font-semibold">Ayuda rápida</h4>
               <p className="text-sm text-gray-600 mt-2">Accede al manual de operación y la cheatsheet para el equipo.</p>
-              <p className="mt-3"><a href="/docs/MANUAL-OPERACION-ADMIN-ICJC.md" target="_blank" className="text-[#0A4D9C] underline">Manual</a></p>
-              <p className="mt-1"><a href="/docs/CHEATSHEET-ADMIN-ICJC.md" target="_blank" className="text-[#0A4D9C] underline">Cheatsheet</a></p>
+              <p className="mt-3"><Link href="/docs/MANUAL-OPERACION-ADMIN-ICJC.md" target="_blank" className="text-[#0A4D9C] underline">Manual</Link></p>
+              <p className="mt-1"><Link href="/docs/CHEATSHEET-ADMIN-ICJC.md" target="_blank" className="text-[#0A4D9C] underline">Cheatsheet</Link></p>
             </div>
           </aside>
         </section>

@@ -1,4 +1,4 @@
-# PR: feat: ICJC sitio público dinámico + panel /admin with RBAC, workflow, bitácora and Facebook sync
+# PR: feat: ICJC sitio público dinámico + panel /admin with RBAC, bitácora and Facebook sync
 
 Branch: feature/icjc-mvp-admin
 

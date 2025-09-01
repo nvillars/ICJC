@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" fill="#0A4D9C" rx="16" />
+  <defs>
+    <!-- clip path to make the image circular -->
+    <clipPath id="circle-clip">
+      <circle cx="40" cy="40" r="20" />
+    </clipPath>
+  </defs>
+  <g transform="translate(16,16)">
+    <!-- white circular area (background for emblem) -->
+    <circle cx="24" cy="24" r="20" fill="#fff" />
+    <!-- emblem image: place file at /public/brand/emblem.png -->
+    <!-- the image is clipped to the circle; it should be a square PNG/JPG with enough padding -->
+    <image href="/brand/emblem.png" x="4" y="4" width="40" height="40" clip-path="url(#circle-clip)" preserveAspectRatio="xMidYMid slice" />
+
+    <path d="M8 56h80v8H8z" fill="#0CB9C5" />
+    <text x="64" y="96" font-size="12" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif">ICJC</text>
+  </g>
+</svg>

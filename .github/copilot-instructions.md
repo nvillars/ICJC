@@ -148,7 +148,7 @@ Objetivo: Crear y dejar listo para producción el sitio de **“IC Jesucristo es
 /scripts { seed-admin.ts, import-facebook.ts, build-sitemap.ts }
 /public { brand/logo.svg, og-default.jpg }
 /styles { globals.css }
-/.github { workflows/ci.yml, copilot-instructions.md }
+/.github { copilot-instructions.md }
 ```
 
 ## 10) Endpoints (server) – criterios
@@ -181,7 +181,7 @@ FB_ACCESS_TOKEN=""
 
 ## 13) QA y CI/CD
 - Tests unitarios (modelos/validaciones) + e2e básicos (CRUD, publicación, login).
-- GitHub Actions: lint, typecheck, build, tests, artifact. Lighthouse CI opcional.
+- (CI/CD local/manual, sin GitHub Actions en desarrollo)
 
 ## 14) Contenidos A–M (pegar archivos/seeds donde aplique)
 - `sitemap.json`:

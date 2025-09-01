@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/icjc'
 
 if (!process.env.MONGODB_URI) {
-  console.info('MONGODB_URI not set, defaulting to local mongodb://127.0.0.1:27017/icjc')
+  /* eslint-disable-next-line no-console */
+  console.debug('MONGODB_URI not set, defaulting to local mongodb://127.0.0.1:27017/icjc')
 }
 
 // Use a safe any-typed global cache to avoid TS7053 errors when indexing globalThis

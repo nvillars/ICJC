@@ -23,7 +23,8 @@ export async function POST(req) {
     const safe = { id: user._id.toString(), email: user.email, name: user.name, roles: user.roles || [] }
     return new Response(JSON.stringify({ ok: true, user: safe }), { status: 200 })
   } catch (e) {
-    console.error('debug-login error', e)
+    /* eslint-disable-next-line no-console */
+    console.debug('debug-login error', e)
     return new Response(JSON.stringify({ error: 'server' }), { status: 500 })
   }
 }

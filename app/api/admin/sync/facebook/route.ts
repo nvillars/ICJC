@@ -15,7 +15,7 @@ async function importFromCSV() {
   return items
 }
 
-export async function POST(req: Request) {
+export async function POST() {
   await connect()
   // if FB token exists, ideally call Graph API (not implemented fully here)
   const fbToken = process.env.FB_ACCESS_TOKEN
@@ -39,4 +39,17 @@ export async function POST(req: Request) {
     }
   }
   return NextResponse.json({ imported: created.length, items: created })
+}
+
+export async function GET() {
+  // Return a lightweight status: whether FB token is configured and number of candidates in CSV
+  const fbToken = process.env.FB_ACCESS_TOKEN
+  let candidates = 0
+  try {
+    const csv = await fs.promises.readFile(path.join(process.cwd(), 'data', 'facebook_inventory.csv'), 'utf8')
+    candidates = csv.split('\n').slice(1).filter(Boolean).length
+  } catch (e) {
+    candidates = 0
+  }
+  return NextResponse.json({ hasToken: Boolean(fbToken), candidates })
 }
